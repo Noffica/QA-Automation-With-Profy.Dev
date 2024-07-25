@@ -1,16 +1,12 @@
-This repository is part of the [React Job Simulator](https://profy.dev) where you work in a professional dev environment with advanced tooling and workflows. You implement tasks based on designs starting from small bug fixes to full-blown features. Basically, you learn a lot of the things hands-on that you usually only experience once you joined a professional React team.
-
 ## The Application
 
-The application is an error logging and monitoring tool similar to Sentry or Rollbar. You can find a deployed version of the main branch at [prolog.profy.dev](https://prolog.profy.dev). Note: you have to click the "Dashboard" link in the upper right corner to see the app as shown in the screenshot below.
+This is a cloned repository of the [React Job Simulator](https://profy.dev) course. The starting codebase has been repurposed as a showcase of QA automated testing alongside feature development.
+
+The history of the project will show features and fixes implemented from tickets and designs and the tests to accompany those tasks.
+
+The application mimicks an error logging and monitoring tool similar to Sentry or Rollbar.
 
 ![The running application](docs/app.png)
-
-## Codebase Tour
-
-Watch this video for a tour through the codebase.
-
-[![Codebase tour](docs/codebase-tour.png)](https://youtu.be/jehH--7FnBo)
 
 ## Getting Started
 
@@ -21,6 +17,22 @@ This project is built with Next.js, TypeScript, Cypress & SCSS modules among oth
 ```bash
 npm install
 ```
+
+If these are any warnings or vulnerabilities we're going to have to start the `npm` dance with:
+
+```bash
+npm audit fix --force
+...
+npm install
+```
+
+After that, follow any errors and fix the errors by chagning the versions of packages in the `package.json` file. But! before manually playing with individual package versions try:
+
+```bash
+npm update
+```
+
+And then `npm install` shouldn't throw any errors. If it does, keep on keeping on with the npm dance we all love and care about.
 
 ### 2. Create .env File
 
@@ -34,9 +46,11 @@ Finally, run the development server:
 npm run dev
 ```
 
-Now you can open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+Now you can open [http://localhost:3000/dashboard](http://localhost:3000/dashboard) with your browser to see the application.
 
 ## Recommended VS Code Extensions
+
+** Per the [React Job Simulator](https://profy.dev) recommendations **
 
 This project uses tools like ESLint, Stylelint, and Prettier. To make the most of these tools it's recommended to install the corresponding extensions. For VS Code those are:
 
@@ -63,6 +77,8 @@ Additional extensions that I find very valuable are
 [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) (paid)
 
 ## Tests
+
+### Cypress
 
 This project is covered with Cypress tests. Although most tests for production apps are currently written with React Testing Library, Cypress is the best option to get started with testing. When you're new to testing the start can be very cumbersome and feel like you're in a completely new dev environment.
 

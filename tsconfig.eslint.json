@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "jest.config.js",
+    "next.config.js",
+    "cypress/plugins/index.js",
+    "pages/index.jsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "config",
+    "doc",
+    "env",
+    "public",
+    "scripts",
+    "router.tsx"
+  ]
+}

@@ -8,16 +8,17 @@ import styles from "./issue-list.module.scss";
 export function IssueList() {
   const router = useRouter();
   const page = Number(router.query.page || 1);
+
   const navigateToPage = (newPage: number) =>
     router.push({
       pathname: router.pathname,
       query: { page: newPage },
     });
 
-  const issuesPage = useGetIssues(page);
+  const issues = useGetIssues(page);
   const projects = useGetProjects();
 
-  if (projects.isLoading || issuesPage.isLoading) {
+  if (projects.isLoading || issues.isLoading) {
     return <div>Loading</div>;
   }
 
@@ -26,9 +27,9 @@ export function IssueList() {
     return <div>Error loading projects: {projects.error.message}</div>;
   }
 
-  if (issuesPage.isError) {
-    console.error(issuesPage.error);
-    return <div>Error loading issues: {issuesPage.error.message}</div>;
+  if (issues.isError) {
+    console.error(issues.error);
+    return <div>Error loading issues: {issues.error.message}</div>;
   }
 
   const projectIdToLanguage = (projects.data || []).reduce(
@@ -38,7 +39,8 @@ export function IssueList() {
     }),
     {} as Record<string, ProjectLanguage>,
   );
-  const { items, meta } = issuesPage.data || {};
+
+  const { items, meta } = issues.data;
 
   return (
     <div className={styles.container}>
@@ -52,7 +54,7 @@ export function IssueList() {
           </tr>
         </thead>
         <tbody>
-          {(items || []).map((issue) => (
+          {items.map((issue) => (
             <IssueRow
               key={issue.id}
               issue={issue}

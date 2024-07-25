@@ -8,6 +8,6 @@ type PageMeta = {
 };
 
 export type Page<T> = {
-  items: Array<T>;
+  items: T[];
   meta: PageMeta;
 };
