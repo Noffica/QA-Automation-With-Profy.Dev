@@ -8,7 +8,9 @@ import Axios from "axios";
 // );
 
 export const axios = Axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL:
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    "https://hidden-bastion-18291-71157d9a31ff.herokuapp.com",
 });
 
 axios.interceptors.response.use(
