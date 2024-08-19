@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Sidebar navigation", () => {
-  test.describe("under 'Desktop' resolution", () => {
+  test.describe("under Desktop resolution", () => {
     test.describe.configure({ mode: "serial" });
 
     test.beforeEach(async ({ page }) => {
@@ -54,13 +54,24 @@ test.describe("Sidebar navigation", () => {
         page,
       }) => {
         const navigationPanel = page.getByRole("navigation");
+        const links = ["Projects", "Issues", "Alerts", "Users"];
 
         // not in viewport at start / by default
         await expect(navigationPanel).not.toBeInViewport();
+        // check that the links also are NOT visible
+        for (const linkText of links) {
+          await expect(
+            navigationPanel.getByText(linkText),
+          ).not.toBeInViewport();
+        }
 
         // click the triple lines icon to bring the navigation sidebar into view
         await page.getByAltText("open menu").click();
+
         await expect(navigationPanel).toBeInViewport();
+        for (const linkText of links) {
+          await expect(navigationPanel.getByText(linkText)).toBeInViewport();
+        }
       });
     });
   });
