@@ -1,4 +1,4 @@
-type PageMeta = {
+export type Meta = {
   currentPage: number;
   limit: number;
   totalItems: number;

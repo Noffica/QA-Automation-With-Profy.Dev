@@ -1,4 +1,4 @@
-// import assert from "assert";
+import assert from "assert";
 import Axios from "axios";
 
 // TODO Set NEXT_PUBLIC_API_BASE_URL in Git repo

@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { getIssues } from "@api/issues";
-import type { Page } from "@typings/page.types";
 import type { Issue } from "@api/issues.types";
 
 export function useGetIssues(page?: number) {
