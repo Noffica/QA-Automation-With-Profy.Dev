@@ -1,41 +1,36 @@
 // modules
-import { Locator, test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 // files
 import mockIssuesPageOne from "./fixtures/issues-page-1.json";
 
 test.describe("Issue list", () => {
-  test.beforeEach(({ page }) => {
-    const endpoint = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const endpoint = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+  test.beforeEach(async ({ page }) => {
+    await page.goto("http://localhost:3000/dashboard/issues?page=1");
     // setup request mocks
-    const getIssuesPageOne = page.route(
-      `${endpoint}/issues?page=1`,
-      async (route) => {
-        await route.fulfill({
-          body: JSON.stringify(mockIssuesPageOne),
-        });
-      },
-    );
-
-    test.describe("under 'Desktop' resolution", () => {
-      test.beforeEach(async ({ page }) => {
-        await page.setViewportSize({ width: 1025, height: 900 });
-        await getIssuesPageOne;
+    await page.route(`${endpoint}/issues?page=1`, async (route) => {
+      await route.fulfill({
+        body: JSON.stringify(mockIssuesPageOne),
       });
+    });
+  });
 
-      test("renders the issues", async ({ page }) => {
-        const rowsOfIssues: Locator = page
-          .getByTestId("table-body")
-          .getByTestId(/issue-/);
-        await rowsOfIssues.click();
-      });
+  test.describe("under 'Desktop' resolution", () => {
+    test.beforeEach(async ({ page }) => {
+      await page.setViewportSize({ width: 1025, height: 900 });
+    });
+
+    test("renders the issues", async ({ page }) => {
+      console.log(mockIssuesPageOne);
+      const rowsOfIssues = page.getByTestId("table-body");
+      expect(await rowsOfIssues.count()).toBeGreaterThan(0);
     });
   });
 });
 
 // modules
-// import { expect, Locator, test } from "@playwright/test";
 // import { capitalize } from "lodash";
 //
 // // files

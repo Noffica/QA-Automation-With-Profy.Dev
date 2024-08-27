@@ -21,7 +21,7 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
   const firstLineOfStackTrace = stack.split("\n")[1];
 
   return (
-    <tr className={styles.row} data-testID={`issue-${issue.id}`}>
+    <tr className={styles.row} data-testid={`issue-${issue.id}`}>
       <td className={styles.issueCell}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

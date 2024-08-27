@@ -26,7 +26,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const { name, language, numIssues, numEvents24h, status } = project;
 
   return (
-    <div className={styles.container} data-testID={project.id}>
+    <div className={styles.container} data-testid={project.id}>
       <div className={styles.topContainer}>
         <div className={styles.nameAndIconContainer}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
