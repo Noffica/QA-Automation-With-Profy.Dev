@@ -1,8 +1,8 @@
-import capitalize from "lodash/capitalize";
-import { Badge, BadgeColor, BadgeSize } from "@features/ui";
-import { ProjectLanguage } from "@api/projects.types";
-import { IssueLevel } from "@api/issues.types";
 import type { Issue } from "@api/issues.types";
+import { IssueLevel } from "@api/issues.types";
+import { ProjectLanguage } from "@api/projects.types";
+import { Badge, BadgeColor, BadgeSize } from "@features/ui";
+import capitalize from "lodash/capitalize";
 import styles from "./issue-row.module.scss";
 
 type IssueRowProps = {
@@ -21,7 +21,7 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
   const firstLineOfStackTrace = stack.split("\n")[1];
 
   return (
-    <tr className={styles.row}>
+    <tr className={styles.row} data-testID={`issue-${issue.id}`}>
       <td className={styles.issueCell}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
