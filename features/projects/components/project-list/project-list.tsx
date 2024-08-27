@@ -1,5 +1,5 @@
-import { ProjectCard } from "../project-card";
 import { useGetProjects } from "../../api/use-get-projects";
+import { ProjectCard } from "../project-card";
 import styles from "./project-list.module.scss";
 
 export function ProjectList() {
