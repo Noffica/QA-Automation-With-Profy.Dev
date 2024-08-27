@@ -24,8 +24,8 @@ test.describe("Issue list", () => {
 
     test("renders the issues", async ({ page }) => {
       console.log(mockIssuesPageOne);
-      const rowsOfIssues = page.getByTestId("table-body");
-      expect(await rowsOfIssues.count()).toBeGreaterThan(0);
+      const rowsOfIssues = page.getByTestId(/table-body/).getByTestId(/issue/);
+      await expect(rowsOfIssues).toHaveCount(10);
     });
   });
 });
