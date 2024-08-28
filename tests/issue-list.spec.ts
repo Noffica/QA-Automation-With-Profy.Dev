@@ -1,7 +1,8 @@
 // modules
-import { expect, test } from "@playwright/test";
+import { expect, Locator, test } from "@playwright/test";
 
 // files
+import { capitalize } from "lodash";
 import mockIssuesPageOne from "./fixtures/issues-page-1.json";
 
 test.describe("Issue list", () => {
@@ -23,61 +24,19 @@ test.describe("Issue list", () => {
     });
 
     test("renders the issues", async ({ page }) => {
-      console.log(mockIssuesPageOne);
-      const rowsOfIssues = page.getByTestId(/table-body/).getByTestId(/issue/);
-      await expect(rowsOfIssues).toHaveCount(10);
+      for (const {
+        id,
+        attributes: { name, level, message },
+      } of mockIssuesPageOne.data) {
+        const issueRow: Locator = page.getByTestId(`issue-${id}`);
+        await expect(issueRow.getByTestId("error-name")).toContainText(name);
+        await expect(issueRow.getByTestId("badge-level")).toContainText(
+          capitalize(level),
+        );
+        await expect(issueRow.getByTestId("error-message")).toContainText(
+          message,
+        );
+      }
     });
   });
 });
-
-// modules
-// import { capitalize } from "lodash";
-//
-// // files
-// import projectsMockedRespBody from "./fixtures/projects.json";
-//
-// test.describe("Projects list", () => {
-//   const endpoint = process.env.NEXT_PUBLIC_API_BASE_URL;
-//
-//   test.beforeEach(async ({ page }) => {
-//     // load the base URL
-//     await page.goto("http://localhost:3000/dashboard");
-//
-//     // set the API mock
-//     await page.route(`${endpoint}/projects`, async (route) => {
-//       await route.fulfill({
-//         body: JSON.stringify(projectsMockedRespBody),
-//       });
-//     });
-//   });
-//
-//   test.describe("'Desktop' resolution", () => {
-//     test.beforeEach(async ({ page }) => {
-//       await page.setViewportSize({ width: 1025, height: 900 });
-//     });
-//
-//     test("renders the projects", async ({ page }) => {
-//       // get project cards
-//       const projectCards: Locator = page
-//         .locator("main ul")
-//         .getByRole("listitem");
-//       await expect(projectCards).toHaveCount(3);
-//
-//       for (const projectDataMock of projectsMockedRespBody.data) {
-//         const cardTestSubject: Locator = page.getByTestId(projectDataMock.id);
-//         const { name, language, status } = projectDataMock.attributes;
-//
-//         await expect(cardTestSubject).toContainText(name);
-//         await expect(cardTestSubject).toContainText(capitalize(language));
-//         // await expect(cardTestSubject).toContainText(mockedRespAttr.numIssues); //BUG. Front-end fails to render data
-//         // await expect(cardTestSubject).toContainText(mockedRespAttr.numEvents24h); //BUG. Front-end fails to render data
-//         await expect(cardTestSubject).toContainText(capitalize(status));
-//
-//         await expect(cardTestSubject.getByRole("link")).toHaveAttribute(
-//           "href",
-//           "/dashboard/issues",
-//         );
-//       }
-//     });
-//   });
-// });

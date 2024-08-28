@@ -31,13 +31,15 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
         />
         <div>
           <div className={styles.errorTypeAndMessage}>
-            <span className={styles.errorType}>{name}:&nbsp;</span>
-            {message}
+            <span data-testid={"error-name"} className={styles.errorType}>
+              {name}:&nbsp;
+            </span>
+            <span data-testid={"error-message"}>{message}</span>
           </div>
           <div>{firstLineOfStackTrace}</div>
         </div>
       </td>
-      <td className={styles.cell}>
+      <td className={styles.cell} data-testid={`badge-level`}>
         <Badge color={levelColors[level]} size={BadgeSize.sm}>
           {capitalize(level)}
         </Badge>
