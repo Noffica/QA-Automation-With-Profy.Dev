@@ -24,6 +24,12 @@ test.describe("Issue list", () => {
     });
 
     test("renders the issues", async ({ page }) => {
+      // all 10 `issue` entities load on the page
+      await expect(
+        page.getByTestId("issues-table-body").getByRole("row"),
+      ).toHaveCount(10);
+
+      // every `issue` entity shows its `name`/type, `level` and `message`
       for (const {
         id,
         attributes: { name, level, message },
