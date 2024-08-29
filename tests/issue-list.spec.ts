@@ -24,11 +24,6 @@ test.describe("Issue list", () => {
     });
 
     test("renders the issues", async ({ page }) => {
-      // all 10 `issue` entities load on the page
-      await expect(
-        page.getByTestId("issues-table-body").getByRole("row"),
-      ).toHaveCount(10);
-
       // every `issue` entity shows its `name`/type, `level` and `message`
       for (const {
         id,
@@ -43,6 +38,69 @@ test.describe("Issue list", () => {
           message,
         );
       }
+    });
+
+    test.describe("pagination", () => {
+      let buttonPrevious: Locator;
+      let buttonNext: Locator;
+
+      test.beforeEach(({ page }) => {
+        buttonPrevious = page.getByRole("button", { name: "Previous" });
+        buttonNext = page.getByRole("button", { name: "Next" });
+      });
+
+      test("populates the first page with 10 'issue' entities", async ({
+        page,
+      }) => {
+        // all 10 `issue` entities load on the page
+        await expect(
+          page.getByTestId("issues-table-body").getByRole("row"),
+        ).toHaveCount(10);
+      });
+
+      test("sees 'Previous' button disabled, 'Next' button enabled on first page", async ({
+        page,
+      }) => {
+        // TODO: file a ticket on Trello to fix pagination information
+        //       currently displayed as "Page of "
+        await expect(buttonPrevious).toBeDisabled();
+        await expect(buttonNext).toBeEnabled();
+      });
+
+      test("sees 'Previous' and 'Next' buttons enabled on non-end pages", async ({
+        page,
+      }) => {
+        await buttonNext.click().then(async () => {
+          await expect(buttonPrevious).toBeEnabled();
+          await expect(buttonNext).toBeEnabled();
+        });
+      });
+
+      test("populates the next page with 10 'issue' entities", async ({
+        page,
+      }) => {
+        await buttonNext.click().then(async () => {
+          await expect(
+            page.getByTestId("issues-table-body").getByRole("row"),
+          ).toHaveCount(10);
+
+          //TODO: do we need to re-assert that the front-end successfully renders 'issue` data from the back-end?
+          await expect(
+            page
+              .getByTestId("error-message")
+              .filter({ hasText: "Unexpected '#' used outside of class body" }),
+          ).toBeVisible();
+        });
+      });
+
+      test("sees 'Previous' button enabled, 'Next' button disabled on last page", async () => {
+        await buttonNext.click().then(async () => {
+          await buttonNext.click().then(async () => {
+            await expect(buttonNext).toBeDisabled();
+            await expect(buttonPrevious).toBeEnabled();
+          });
+        });
+      });
     });
   });
 });
