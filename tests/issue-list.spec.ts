@@ -67,37 +67,69 @@ test.describe("Issue list", () => {
         await expect(buttonNext).toBeEnabled();
       });
 
-      test("sees 'Previous' and 'Next' buttons enabled on non-end pages", async ({
-        page,
-      }) => {
+      test("sees 'Previous' and 'Next' buttons enabled on non-end pages", async () => {
         await buttonNext.click().then(async () => {
           await expect(buttonPrevious).toBeEnabled();
           await expect(buttonNext).toBeEnabled();
         });
       });
 
-      test("populates the next page with 10 'issue' entities", async ({
-        page,
-      }) => {
-        await buttonNext.click().then(async () => {
-          await expect(
+      test.describe("population of 'issue' entities upon navigating back and forth between pages, reloading", () => {
+        let checkCountOfIssuesPasses: Promise<void>;
+        let issuePresentOnlyOnPageTwo: Locator;
+
+        test.beforeEach(({ page }) => {
+          checkCountOfIssuesPasses = expect(
             page.getByTestId("issues-table-body").getByRole("row"),
           ).toHaveCount(10);
 
-          //TODO: do we need to re-assert that the front-end successfully renders 'issue` data from the back-end?
-          await expect(
-            page
-              .getByTestId("error-message")
-              .filter({ hasText: "Unexpected '#' used outside of class body" }),
-          ).toBeVisible();
+          issuePresentOnlyOnPageTwo = page
+            .getByTestId("error-message")
+            .filter({ hasText: "Unexpected '#' used outside of class body" });
+        });
+        test.afterEach(async () => {
+          await checkCountOfIssuesPasses;
+          await expect(issuePresentOnlyOnPageTwo).toBeVisible();
+        });
+
+        test("confirms list of issues and issue data load upon navigating to another page", async () => {
+          //go to pg. 2
+          await buttonNext.click();
+        });
+        test("confirms list of issues and issue data load after navigating to next page and back", async () => {
+          // go to pg. 2
+          await buttonNext.click().then(async () => {
+            // go to pg. 3
+            await buttonNext.click().then(async () => {
+              // back to pg. 2
+              await buttonPrevious.click();
+            });
+          });
+        });
+        test("confirms list of issues and issue data load after navigating to next page, reloading and back", async ({
+          page,
+        }) => {
+          // go to pg. 2
+          await buttonNext.click().then(async () => {
+            // go to pg. 3
+            await buttonNext.click().then(async () => {
+              // reload on pg. 3
+              await page.reload().then(async () => {
+                // back to pg. 2
+                await buttonPrevious.click();
+              });
+            });
+          });
         });
       });
 
       test("sees 'Previous' button enabled, 'Next' button disabled on last page", async () => {
         await buttonNext.click().then(async () => {
           await buttonNext.click().then(async () => {
-            await expect(buttonNext).toBeDisabled();
-            await expect(buttonPrevious).toBeEnabled();
+            await buttonNext.click().then(async () => {
+              await expect.soft(buttonNext).toBeDisabled(); //TODO: create a work-order for this bug
+              await expect(buttonPrevious).toBeEnabled();
+            });
           });
         });
       });
