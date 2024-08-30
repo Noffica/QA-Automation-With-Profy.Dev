@@ -4,6 +4,7 @@ import { expect, Locator, test } from "@playwright/test";
 // files
 import { capitalize } from "lodash";
 import mockIssuesPageOne from "./fixtures/issues-page-1.json";
+import { count } from "rxjs";
 
 test.describe("Issue list", () => {
   const endpoint = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -75,26 +76,25 @@ test.describe("Issue list", () => {
       });
 
       test.describe("population of 'issue' entities upon navigating back and forth between pages, reloading", () => {
-        let checkCountOfIssuesPasses: Promise<void>;
+        let listOfIssues: Locator;
         let issuePresentOnlyOnPageTwo: Locator;
 
         test.beforeEach(({ page }) => {
-          checkCountOfIssuesPasses = expect(
-            page.getByTestId("issues-table-body").getByRole("row"),
-          ).toHaveCount(10);
+          listOfIssues = page.getByTestId("issues-table-body").getByRole("row");
 
           issuePresentOnlyOnPageTwo = page
             .getByTestId("error-message")
             .filter({ hasText: "Unexpected '#' used outside of class body" });
         });
         test.afterEach(async () => {
-          await checkCountOfIssuesPasses;
+          await expect(listOfIssues).toHaveCount(10);
           await expect(issuePresentOnlyOnPageTwo).toBeVisible();
         });
 
         test("confirms list of issues and issue data load upon navigating to another page", async () => {
-          //go to pg. 2
+          // go to pg. 2
           await buttonNext.click();
+          // run assertions in `.afterEach()`
         });
         test("confirms list of issues and issue data load after navigating to next page and back", async () => {
           // go to pg. 2
@@ -105,6 +105,7 @@ test.describe("Issue list", () => {
               await buttonPrevious.click();
             });
           });
+          // run assertions in `.afterEach()`
         });
         test("confirms list of issues and issue data load after navigating to next page, reloading and back", async ({
           page,
@@ -120,12 +121,16 @@ test.describe("Issue list", () => {
               });
             });
           });
+          // run assertions in `.afterEach()`
         });
       });
 
       test("sees 'Previous' button enabled, 'Next' button disabled on last page", async () => {
+        // go to pg. 2
         await buttonNext.click().then(async () => {
+          // go to pg. 3
           await buttonNext.click().then(async () => {
+            // go to pg. 4 - the last page
             await buttonNext.click().then(async () => {
               await expect.soft(buttonNext).toBeDisabled(); //TODO: create a work-order for this bug
               await expect(buttonPrevious).toBeEnabled();
