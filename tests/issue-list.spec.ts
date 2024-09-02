@@ -31,7 +31,7 @@ test.describe("Issue list", () => {
       } of mockIssuesPageOne.data) {
         const issueRow: Locator = page.getByTestId(`issue-${id}`);
         await expect(issueRow.getByTestId("error-name")).toContainText(name);
-        await expect(issueRow.getByTestId("badge-level")).toContainText(
+        await expect(issueRow.getByTestId("issue-badge")).toContainText(
           capitalize(level),
         );
         await expect(issueRow.getByTestId("error-message")).toContainText(
@@ -81,12 +81,17 @@ test.describe("Issue list", () => {
             .filter({ hasText: "Unexpected '#' used outside of class body" });
         });
 
-        test("confirms population of list of issues and issue data upon navigating to another page", async () => {
+        test("confirms population of list of issues and issue data upon navigating to another page", async ({
+          page,
+        }) => {
           // go to pg. 2
           await buttonNext.click();
+          await expect(page).toHaveURL(/issues\?page=2/);
           await expect(issuePresentOnlyOnPageTwo).toBeVisible();
         });
-        test("confirms list of issues and issue data load after navigating to next page and back", async () => {
+        test("confirms list of issues and issue data load after navigating to next page and back", async ({
+          page,
+        }) => {
           // go to pg. 2
           await buttonNext.click();
           // go to pg. 3
@@ -94,6 +99,7 @@ test.describe("Issue list", () => {
           // back to pg. 2
           await buttonPrevious.click();
           // assertion
+          await expect(page).toHaveURL(/issues\?page=2/);
           await expect(issuePresentOnlyOnPageTwo).toBeVisible();
         });
         test("confirms list of issues and issue data load after navigating to next page, reloading and back", async ({
@@ -109,6 +115,7 @@ test.describe("Issue list", () => {
           await buttonPrevious.click();
 
           // run assertions
+          await expect(page).toHaveURL(/issues\?page=2/);
           await expect(issuePresentOnlyOnPageTwo).toBeVisible();
         });
       });

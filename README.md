@@ -1,6 +1,6 @@
 ## The Application
 
-This is a cloned repository of the [React Job Simulator](https://profy.dev) course. The starting codebase has been repurposed as a showcase of QA automated testing alongside feature development.
+This is a cloned repository of the [React Job Simulator](https://profy.dev) course. The starting codebase has been re-purposed as a showcase of QA automated testing alongside feature development.
 
 The history of the project will show features and fixes implemented from tickets and designs and the tests to accompany those tasks.
 
@@ -78,19 +78,16 @@ Additional extensions that I find very valuable are
 
 ## Tests
 
-### Cypress
+### e2e
 
-This project is covered with Cypress tests. Although most tests for production apps are currently written with React Testing Library, Cypress is the best option to get started with testing. When you're new to testing the start can be very cumbersome and feel like you're in a completely new dev environment.
+Tests with Cypress were part of the inherited baseline project.
 
-Cypress makes it much easier to get started with testing. You still have to get used to the new way of coding but thanks to its awesome UI debugging is easy and very similar to what you're used from your browser.
+Tests with Playwright are part of the new changes and additions.
 
+Further tests with both, Cypress and Playwright, and later on with Selenium 4, will be added as part of development.
+
+A sample screenshot of Cypress has been provided here:
 ![Cypress test](docs/cypress.gif)
-
-To run the Cypress tests on your local machine use this command:
-
-```bash
-npm run cypress
-```
 
 ## Storybook
 

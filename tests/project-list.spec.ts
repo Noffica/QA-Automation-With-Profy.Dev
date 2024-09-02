@@ -33,7 +33,9 @@ test.describe("Projects list", () => {
       await expect(projectCards).toHaveCount(3);
 
       for (const projectDataMock of projectsMockedRespBody.data) {
-        const cardTestSubject: Locator = page.getByTestId(projectDataMock.id);
+        const cardTestSubject: Locator = page.getByTestId(
+          `project-${projectDataMock.id}`,
+        );
         const { name, language, status } = projectDataMock.attributes;
 
         await expect(cardTestSubject).toContainText(name);

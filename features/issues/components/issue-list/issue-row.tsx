@@ -39,7 +39,7 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
           <div>{firstLineOfStackTrace}</div>
         </div>
       </td>
-      <td className={styles.cell} data-testid={`badge-level`}>
+      <td className={styles.cell} data-testid={`issue-badge`}>
         <Badge color={levelColors[level]} size={BadgeSize.sm}>
           {capitalize(level)}
         </Badge>
