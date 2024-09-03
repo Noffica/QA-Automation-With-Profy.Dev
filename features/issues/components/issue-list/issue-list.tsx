@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
 import { ProjectLanguage } from "@api/projects.types";
 import { useGetProjects } from "@features/projects";
+import { useRouter } from "next/router";
 import { useGetIssues } from "../../api/use-get-issues";
-import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
+import { IssueRow } from "./issue-row";
 
 export function IssueList() {
   const router = useRouter();
@@ -53,7 +53,7 @@ export function IssueList() {
             <th className={styles.headerCell}>Users</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody data-testid={"issues-table-body"}>
           {items.map((issue) => (
             <IssueRow
               key={issue.id}

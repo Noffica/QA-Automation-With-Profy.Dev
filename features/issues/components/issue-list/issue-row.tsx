@@ -1,8 +1,8 @@
-import capitalize from "lodash/capitalize";
-import { Badge, BadgeColor, BadgeSize } from "@features/ui";
-import { ProjectLanguage } from "@api/projects.types";
-import { IssueLevel } from "@api/issues.types";
 import type { Issue } from "@api/issues.types";
+import { IssueLevel } from "@api/issues.types";
+import { ProjectLanguage } from "@api/projects.types";
+import { Badge, BadgeColor, BadgeSize } from "@features/ui";
+import capitalize from "lodash/capitalize";
 import styles from "./issue-row.module.scss";
 
 type IssueRowProps = {
@@ -21,7 +21,7 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
   const firstLineOfStackTrace = stack.split("\n")[1];
 
   return (
-    <tr className={styles.row}>
+    <tr className={styles.row} data-testid={`issue-${issue.id}`}>
       <td className={styles.issueCell}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -31,13 +31,15 @@ export function IssueRow({ projectLanguage, issue }: IssueRowProps) {
         />
         <div>
           <div className={styles.errorTypeAndMessage}>
-            <span className={styles.errorType}>{name}:&nbsp;</span>
-            {message}
+            <span data-testid={"error-name"} className={styles.errorType}>
+              {name}:&nbsp;
+            </span>
+            <span data-testid={"error-message"}>{message}</span>
           </div>
           <div>{firstLineOfStackTrace}</div>
         </div>
       </td>
-      <td className={styles.cell}>
+      <td className={styles.cell} data-testid={`issue-badge`}>
         <Badge color={levelColors[level]} size={BadgeSize.sm}>
           {capitalize(level)}
         </Badge>
